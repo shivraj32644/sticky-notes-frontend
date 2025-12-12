@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight, Check } from "lucide-react";
 
-import { StickyGroup } from "../types/index";
-import { formatDateKey, getMonthDays, getTodayKey } from "../utils";
+import { formatDateKey, getMonthDays, getTodayKey } from "../../home/utils";
 import { cn } from "../../../../lib/utils";
+import { DayContent } from "../../../../shared/types";
 
 interface CalendarViewProps {
   currentDateKey: string;
   onSelectDate: (dateKey: string) => void;
   onClose: () => void;
-  groupData: StickyGroup["content"];
-  themeClass: string;
+  groupData: Record<string, DayContent> | undefined;
+  themeClass?: string;
 }
 
 export const CalendarView: React.FC<CalendarViewProps> = ({
@@ -80,11 +80,12 @@ export const CalendarView: React.FC<CalendarViewProps> = ({
           const key = formatDateKey(date);
           const isSelected = key === currentDateKey;
           const isToday = key === todayKey;
+          const dayContent = groupData?.[key];
           const hasContent =
-            groupData[key] &&
-            (groupData[key].todos.length > 0 ||
-              groupData[key].notes.trim().length > 0);
-          const todos = groupData[key]?.todos || [];
+            dayContent &&
+            (dayContent.todos.length > 0 ||
+              (dayContent.notes && dayContent.notes.trim().length > 0));
+          const todos = dayContent?.todos || [];
           const allDone = todos.length > 0 && todos.every((t) => t.completed);
 
           return (

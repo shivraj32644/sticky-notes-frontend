@@ -29,6 +29,17 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
     }
   }, []);
 
+  // Update content when initialContent changes externally (but not on every keystroke)
+  useEffect(() => {
+    if (editorRef.current && !isFocused && initialContent !== editorRef.current.innerHTML) {
+      // Only update if not focused to avoid cursor jumping while typing
+      const currentText = editorRef.current.innerText.trim();
+      if (!currentText && initialContent) {
+        editorRef.current.innerHTML = initialContent;
+      }
+    }
+  }, [initialContent, isFocused]);
+
   const handleInput = () => {
     if (editorRef.current) {
       onUpdate(editorRef.current.innerHTML);
@@ -85,7 +96,6 @@ export const RichTextEditor: React.FC<RichTextEditorProps> = ({
           textColorClass
         )}
         style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}
-        dangerouslySetInnerHTML={{ __html: initialContent }}
       />
     </div>
   );

@@ -32,10 +32,16 @@ import {
   triggerConfetti,
   getRandomQuote,
   formatTime,
-} from "../utils/index";
-import { RichTextEditor } from "./RichTextEditor";
-import { CalendarView } from "./CalendarView";
-import { DayContent, StickyGroup, THEMES, Theme, Todo } from "../types/index";
+} from "../../home/utils/index";
+import { RichTextEditor } from "../components/RichTextEditor";
+import { CalendarView } from "../components/CalendarView";
+import {
+  DayContent,
+  StickyGroup,
+  THEMES,
+  Theme,
+  Todo,
+} from "../../home/types/index";
 import { cn } from "../../../../lib/utils";
 
 interface StickyNoteProps {

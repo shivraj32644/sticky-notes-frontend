@@ -8,6 +8,8 @@ export const IPC = {
   STICKY_NOTE: {
     OPEN: "stickyNote:open",
     SET_ALWAYS_ON_TOP: "stickyNote:setAlwaysOnTop",
+    UPDATE_POSITION: "stickyNote:updatePosition",
+    GET_POSITION: "stickyNote:getPosition",
   },
   WINDOWS: {
     HOME: "window:home",

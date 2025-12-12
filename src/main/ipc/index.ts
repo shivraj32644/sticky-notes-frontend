@@ -13,6 +13,8 @@ import {
   openStickyNoteWindow,
   setAlwaysOnTop,
   closeStickyNoteWindow,
+  updateWindowPosition,
+  getWindowPosition,
 } from "../windows/stickyNoteWindow";
 
 export const registerIpcHandlers = () => {
@@ -56,6 +58,22 @@ export const registerIpcHandlers = () => {
     IPC.STICKY_NOTE.SET_ALWAYS_ON_TOP,
     (_event, payload: { groupId: string; alwaysOnTop: boolean }) => {
       return setAlwaysOnTop(payload.groupId, payload.alwaysOnTop);
+    }
+  );
+
+  // Update window position and size
+  ipcMain.handle(
+    IPC.STICKY_NOTE.UPDATE_POSITION,
+    (_event, payload: { groupId: string; x: number; y: number; width: number; height: number }) => {
+      return updateWindowPosition(payload.groupId, payload.x, payload.y, payload.width, payload.height);
+    }
+  );
+
+  // Get window position and size
+  ipcMain.handle(
+    IPC.STICKY_NOTE.GET_POSITION,
+    (_event, payload: { groupId: string }) => {
+      return getWindowPosition(payload.groupId);
     }
   );
 

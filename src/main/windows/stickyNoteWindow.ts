@@ -29,17 +29,27 @@ export const openStickyNoteWindow = async (
     return existingWindow;
   }
 
+  // Fetch group data to get visibility mode and position/size
+  const groups = await getGroups();
+  const group = groups.find((g: Group) => g.id === groupId);
+
   // If alwaysOnTop not provided, fetch from group data
   if (alwaysOnTop === undefined) {
-    const groups = await getGroups();
-    const group = groups.find((g: Group) => g.id === groupId);
     alwaysOnTop = group?.visibilityMode === "alwaysOnTop" || false;
   }
 
+  // Get saved position/size from group or use defaults
+  const savedX = group?.x ?? undefined;
+  const savedY = group?.y ?? undefined;
+  const savedWidth = group?.width ?? 320;
+  const savedHeight = group?.height ?? 400;
+
   // Create new window with polish
   const noteWindow = new BrowserWindow({
-    width: 320,
-    height: 400,
+    width: savedWidth,
+    height: savedHeight,
+    x: savedX,
+    y: savedY,
     minWidth: 250,
     minHeight: 300,
     frame: false,
@@ -138,6 +148,40 @@ export const setAlwaysOnTop = (
     return true;
   }
   return false;
+};
+
+/**
+ * Update window position and size
+ */
+export const updateWindowPosition = (
+  groupId: string,
+  x: number,
+  y: number,
+  width: number,
+  height: number
+): boolean => {
+  const window = stickyNoteWindows.get(groupId);
+  if (window && !window.isDestroyed()) {
+    window.setPosition(x, y);
+    window.setSize(width, height);
+    return true;
+  }
+  return false;
+};
+
+/**
+ * Get window position and size
+ */
+export const getWindowPosition = (
+  groupId: string
+): { x: number; y: number; width: number; height: number } | null => {
+  const window = stickyNoteWindows.get(groupId);
+  if (window && !window.isDestroyed()) {
+    const [x, y] = window.getPosition();
+    const [width, height] = window.getSize();
+    return { x, y, width, height };
+  }
+  return null;
 };
 
 // Re-export for backwards compatibility
