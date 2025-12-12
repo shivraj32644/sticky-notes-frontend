@@ -116,7 +116,7 @@ const MotivationalMessage: React.FC<{
   );
 };
 
-const StickyNote: React.FC = () => {
+const StickyNoteWindow: React.FC = () => {
   // Parse groupId from hash
   const hash = window.location.hash;
   const groupId = hash.split("/")[2];
@@ -536,7 +536,7 @@ const StickyNote: React.FC = () => {
   // Keyboard shortcuts for todos
   const handleTodoKeyDown = (
     e: React.KeyboardEvent,
-    todoId: string,
+    _todoId: string,
     index: number
   ) => {
     if (e.key === "Enter") {
@@ -959,4 +959,4 @@ const StickyNote: React.FC = () => {
   );
 };
 
-export default StickyNote;
+export default StickyNoteWindow;

@@ -36,7 +36,7 @@ import {
 import { RichTextEditor } from "./RichTextEditor";
 import { CalendarView } from "./CalendarView";
 import { DayContent, StickyGroup, THEMES, Theme, Todo } from "../types/index";
-import { cn } from "../../../lib/utils";
+import { cn } from "../../../../lib/utils";
 
 interface StickyNoteProps {
   group: StickyGroup;

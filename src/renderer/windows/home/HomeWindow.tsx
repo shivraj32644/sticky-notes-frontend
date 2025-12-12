@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useStore } from "../../../lib/store";
 import { Group } from "../../../shared/types";
 import { IPC } from "../../../shared/constants";
+import { HomePageTemplateGemini } from "./components/home-page";
 
 // IPC access
 const { ipcRenderer } = window.require
@@ -28,7 +29,7 @@ const formatRelativeTime = (isoString: string | undefined): string => {
   return date.toLocaleDateString();
 };
 
-const HomePageTemplate: React.FC = () => {
+const HomeWindow: React.FC = () => {
   const {
     groups,
     setGroups,
@@ -479,4 +480,4 @@ const styles: { [key: string]: React.CSSProperties } = {
   },
 };
 
-export default HomePageTemplate;
+export default HomeWindow;

@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from "react";
-import StickyNote from "./modules/home/components/StickyNote";
+import HomeWindow from "./renderer/windows/home/HomeWindow";
+import StickyNoteWindow from "./renderer/windows/sticky-note/StickyNoteWindow";
 
 import "./App.css";
-import HomePageTemplate from "./modules/home/template/home.template";
 
+/**
+ * App Router Component
+ * 
+ * This component handles routing between different window types in the Electron app.
+ * Each window type (Home, StickyNote) loads independently with hash-based routing.
+ * 
+ * Routes:
+ * - #/home (or empty) -> HomeWindow (group management)
+ * - #/sticky/:groupId -> StickyNoteWindow (individual sticky note)
+ */
 function App() {
   const [route, setRoute] = useState(window.location.hash);
 
@@ -16,17 +26,13 @@ function App() {
     return () => window.removeEventListener("hashchange", handleHashChange);
   }, []);
 
-  // Simple manual routing for now
-  // Routes:
-  // #/home (or empty) -> Home
-  // #/sticky/:id -> StickyNote
-
-  let Component = HomePageTemplate;
+  // Route to appropriate window component
   if (route.startsWith("#/sticky/")) {
-    Component = StickyNote;
+    return <StickyNoteWindow />;
   }
 
-  return <Component />;
+  // Default to home window
+  return <HomeWindow />;
 }
 
 export default App;

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Bold, Italic, Underline, List } from "lucide-react";
-import { cn } from "../../../lib/utils";
+import { cn } from "../../../../lib/utils";
 
 interface RichTextEditorProps {
   initialContent: string;

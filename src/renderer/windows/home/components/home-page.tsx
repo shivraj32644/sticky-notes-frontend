@@ -9,7 +9,7 @@ import {
 
 import { StickyGroup, AppState } from "../types/index";
 import { generateId, getTodayKey } from "../utils/index";
-import { cn } from "../../../lib/utils/index";
+import { cn } from "../../../../lib/utils/index";
 
 const INITIAL_GROUPS: StickyGroup[] = [
   {
@@ -125,7 +125,7 @@ export const HomePageTemplateGemini = () => {
   );
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 text-slate-800 font-sans selection:bg-blue-200">
+    <div className="">
       {/* Background / Wallpaper UI elements to make it feel like a desktop */}
       <div
         className="absolute inset-0 pointer-events-none opacity-[0.03]"

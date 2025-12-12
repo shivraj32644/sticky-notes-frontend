@@ -1,0 +1,928 @@
+/* ============================================
+   STICKY NOTE COMPONENT STYLES
+   Clean, Non-Cluttered UI/UX
+   ============================================ */
+
+/* CSS Variables for consistent theming */
+:root {
+  /* Colors */
+  --sticky-bg: #1e1e1e;
+  --sticky-bg-secondary: #2a2a2a;
+  --sticky-header-bg: #ffd43b;
+  --sticky-text-primary: rgba(255, 255, 255, 0.95);
+  --sticky-text-secondary: rgba(255, 255, 255, 0.65);
+  --sticky-text-muted: rgba(255, 255, 255, 0.45);
+  --sticky-text-dark: #1a1a1a;
+  --sticky-divider: rgba(255, 255, 255, 0.08);
+  --sticky-border: rgba(255, 255, 255, 0.1);
+  --sticky-accent: #ffd43b;
+  --sticky-success: #4ade80;
+  --sticky-danger: #ef4444;
+
+  /* Typography */
+  --font-title: 600 14px/1.3 -apple-system, BlinkMacSystemFont, "Segoe UI",
+    system-ui, sans-serif;
+  --font-body: 400 13px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI",
+    system-ui, sans-serif;
+  --font-small: 400 12px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI",
+    system-ui, sans-serif;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 12px;
+  --space-lg: 16px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease-out;
+  --transition-normal: 200ms ease-out;
+}
+
+/* Container */
+.sticky-container {
+  height: 100vh;
+  background-color: var(--sticky-bg);
+  color: var(--sticky-text-primary);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui,
+    sans-serif;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  animation: containerFadeIn 200ms ease-out;
+}
+
+@keyframes containerFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.sticky-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: var(--sticky-text-muted);
+  font: var(--font-body);
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+.sticky-header {
+  height: 36px;
+  min-height: 36px;
+  max-height: 36px;
+  background-color: var(--sticky-header-bg);
+  -webkit-app-region: drag;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-sm);
+  justify-content: space-between;
+  gap: var(--space-sm);
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.sticky-title-section {
+  flex: 1;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.sticky-title {
+  font: var(--font-title);
+  font-size: 13px;
+  color: var(--sticky-text-dark);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  transition: opacity var(--transition-fast);
+  min-width: 0; /* Prevent layout shift */
+  flex: 1;
+}
+
+.sticky-title:hover {
+  opacity: 0.8;
+}
+
+.sticky-streak {
+  font: var(--font-small);
+  font-size: 11px;
+  color: var(--sticky-accent);
+  margin-left: var(--space-xs);
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.sticky-title-input {
+  width: 100%;
+  padding: 2px 6px;
+  background-color: rgba(255, 255, 255, 0.95);
+  border: none;
+  border-radius: 4px;
+  font: var(--font-title);
+  font-size: 13px;
+  color: var(--sticky-text-dark);
+  outline: none;
+  box-sizing: border-box;
+}
+
+/* Controls */
+.sticky-controls {
+  display: flex;
+  gap: 2px;
+  -webkit-app-region: no-drag;
+  flex-shrink: 0;
+}
+
+.sticky-control-btn {
+  background: rgba(0, 0, 0, 0.08);
+  border: none;
+  border-radius: 4px;
+  padding: 4px 6px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--sticky-text-dark);
+  transition: background-color var(--transition-fast),
+    transform var(--transition-fast), opacity var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 26px;
+  position: relative;
+  overflow: hidden;
+}
+
+.sticky-control-btn::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s;
+}
+
+.sticky-control-btn:active::before {
+  width: 200px;
+  height: 200px;
+}
+
+.sticky-control-btn:hover {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+.sticky-control-btn:active {
+  transform: scale(0.95);
+  opacity: 0.8;
+}
+
+.sticky-control-btn:focus-visible {
+  outline: 2px solid var(--sticky-accent);
+  outline-offset: 2px;
+}
+
+.sticky-quick-add-btn {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.sticky-quick-add-btn:hover {
+  background: rgba(255, 213, 59, 0.2);
+  color: var(--sticky-text-dark);
+}
+
+.sticky-close-btn:hover {
+  background: rgba(239, 68, 68, 0.3);
+}
+
+/* Dropdown */
+.sticky-dropdown-container {
+  position: relative;
+}
+
+.sticky-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  background-color: var(--sticky-bg-secondary);
+  border: 1px solid var(--sticky-border);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  z-index: 100;
+  min-width: 130px;
+  animation: dropdownFadeIn var(--transition-fast) ease-out;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sticky-dropdown-item {
+  padding: var(--space-sm) var(--space-md);
+  font: var(--font-small);
+  color: var(--sticky-text-primary);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.sticky-dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.sticky-dropdown-item.active {
+  background-color: rgba(255, 213, 59, 0.15);
+}
+
+.sticky-dropdown-item.danger {
+  color: var(--sticky-danger);
+}
+
+.sticky-dropdown-item.danger:hover {
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+/* ============================================
+   DATE BAR
+   ============================================ */
+.sticky-date-bar {
+  background-color: var(--sticky-bg-secondary);
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--sticky-divider);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.sticky-date-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+}
+
+.sticky-date-arrow {
+  background: transparent;
+  border: none;
+  color: var(--sticky-text-secondary);
+  font-size: 18px;
+  padding: 2px 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all var(--transition-fast);
+  line-height: 1;
+}
+
+.sticky-date-arrow:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--sticky-text-primary);
+}
+
+.sticky-date-text {
+  font: var(--font-body);
+  font-weight: 500;
+  color: var(--sticky-text-primary);
+  text-align: center;
+  min-width: 160px;
+}
+
+.sticky-quick-chips {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-xs);
+}
+
+.sticky-chip {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 3px 10px;
+  font: var(--font-small);
+  font-size: 11px;
+  color: var(--sticky-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.sticky-chip:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--sticky-text-primary);
+}
+
+.sticky-chip.active {
+  background: rgba(255, 213, 59, 0.2);
+  border-color: rgba(255, 213, 59, 0.3);
+  color: var(--sticky-accent);
+}
+
+/* Progress Indicator */
+.sticky-progress-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin: var(--space-xs) 0;
+  padding: 0 var(--space-md);
+}
+
+.sticky-progress-bar {
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.sticky-progress-fill {
+  height: 100%;
+  background: var(--sticky-accent);
+  border-radius: 2px;
+  transition: width 250ms ease-out;
+}
+
+.sticky-progress-text {
+  font: var(--font-small);
+  color: var(--sticky-text-secondary);
+  white-space: nowrap;
+  font-size: 11px;
+}
+
+/* ============================================
+   CONTENT AREA
+   ============================================ */
+.sticky-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  min-height: 0; /* Allow proper scrolling */
+  will-change: scroll-position; /* Optimize scrolling */
+}
+
+/* Custom scrollbar */
+.sticky-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sticky-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sticky-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+.sticky-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Sections */
+.sticky-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.sticky-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sticky-section-label {
+  font: var(--font-small);
+  font-weight: 600;
+  color: var(--sticky-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap; /* Prevent text jumping */
+  flex-shrink: 0;
+}
+
+.sticky-section-count {
+  font: var(--font-small);
+  color: var(--sticky-text-muted);
+}
+
+.sticky-save-status {
+  font: var(--font-small);
+  color: var(--sticky-text-muted);
+  opacity: 0.7;
+  transition: opacity var(--transition-fast);
+}
+
+.sticky-save-status.saved {
+  color: var(--sticky-success);
+  opacity: 1;
+}
+
+.sticky-section-divider {
+  height: 1px;
+  background: var(--sticky-divider);
+  margin: 0 0 var(--space-xs) 0;
+}
+
+/* ============================================
+   NOTES EDITOR
+   ============================================ */
+.sticky-toolbar {
+  display: flex;
+  gap: 2px;
+  padding: var(--space-xs);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--sticky-border);
+  border-radius: 6px 6px 0 0;
+  border-bottom: none;
+  margin-bottom: -1px;
+  animation: slideDown var(--transition-normal) ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sticky-toolbar-btn {
+  background: transparent;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: var(--sticky-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sticky-toolbar-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--sticky-text-primary);
+}
+
+.sticky-toolbar-btn:active {
+  transform: scale(0.95);
+}
+
+.sticky-notes-editor {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--sticky-border);
+  border-radius: 6px;
+  padding: var(--space-sm);
+  font: var(--font-body);
+  color: var(--sticky-text-primary);
+  min-height: 80px;
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  outline: none;
+  transition: border-color var(--transition-fast),
+    background-color var(--transition-fast);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.sticky-notes-editor:empty:before {
+  content: attr(data-placeholder);
+  color: var(--sticky-text-muted);
+  pointer-events: none;
+}
+
+.sticky-notes-editor:focus {
+  border-color: rgba(255, 213, 59, 0.4);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.sticky-notes-editor ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.sticky-notes-editor li {
+  margin: 2px 0;
+}
+
+/* ============================================
+   TODOS
+   ============================================ */
+.sticky-todo-input-container {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.sticky-todo-input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--sticky-border);
+  border-radius: 6px;
+  padding: var(--space-sm);
+  font: var(--font-body);
+  color: var(--sticky-text-primary);
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.sticky-todo-input::placeholder {
+  color: var(--sticky-text-muted);
+}
+
+.sticky-todo-input:focus {
+  border-color: rgba(255, 213, 59, 0.4);
+}
+
+.sticky-todo-add-btn {
+  background: rgba(255, 213, 59, 0.2);
+  border: 1px solid rgba(255, 213, 59, 0.3);
+  border-radius: 6px;
+  padding: 0 var(--space-md);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--sticky-accent);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.sticky-todo-add-btn:hover {
+  background: rgba(255, 213, 59, 0.3);
+}
+
+/* Todo List */
+.sticky-todo-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: var(--space-xs);
+}
+
+.sticky-todo-list-scrollable {
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: var(--space-xs);
+  min-height: 0; /* Allow shrinking */
+}
+
+.sticky-todo-list-scrollable::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sticky-todo-list-scrollable::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sticky-todo-list-scrollable::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+}
+
+.sticky-todo-list-scrollable::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.sticky-todo-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm);
+  border-radius: 6px;
+  transition: all var(--transition-fast);
+  animation: fadeIn var(--transition-normal) ease-out;
+  min-width: 0; /* Prevent overflow */
+  flex-shrink: 0;
+}
+
+.sticky-todo-item:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.sticky-todo-item:hover .sticky-todo-delete {
+  opacity: 1;
+}
+
+.sticky-todo-item.editing {
+  background: rgba(255, 213, 59, 0.1);
+  border: 1px solid rgba(255, 213, 59, 0.3);
+}
+
+.sticky-todo-checkbox {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--sticky-border);
+  border-radius: 4px;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: var(--sticky-success);
+  transition: all var(--transition-fast);
+  flex-shrink: 0;
+  position: relative;
+}
+
+.sticky-todo-checkbox:hover {
+  border-color: var(--sticky-accent);
+}
+
+.sticky-todo-checkbox.checked {
+  background: var(--sticky-success);
+  border-color: var(--sticky-success);
+  color: #fff;
+  animation: checkboxPop 300ms ease-out;
+}
+
+@keyframes checkboxPop {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.check-mark {
+  animation: checkMarkIn var(--transition-fast) ease-out;
+}
+
+@keyframes checkMarkIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.sticky-todo-text {
+  flex: 1;
+  font: var(--font-body);
+  color: var(--sticky-text-primary);
+  transition: all var(--transition-fast);
+  cursor: text;
+  user-select: text;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  min-width: 0; /* Prevent overflow */
+}
+
+.sticky-todo-item.completed .sticky-todo-text {
+  text-decoration: line-through;
+  color: var(--sticky-text-muted);
+  opacity: 0.6;
+}
+
+.sticky-todo-edit-input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 213, 59, 0.4);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font: var(--font-body);
+  color: var(--sticky-text-primary);
+  outline: none;
+}
+
+.sticky-todo-delete {
+  background: transparent;
+  border: none;
+  color: var(--sticky-text-muted);
+  font-size: 16px;
+  cursor: pointer;
+  padding: 0 4px;
+  opacity: 0;
+  transition: all var(--transition-fast);
+}
+
+.sticky-todo-delete:hover {
+  color: var(--sticky-danger);
+}
+
+/* Empty State */
+.sticky-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg);
+  gap: var(--space-sm);
+}
+
+.sticky-empty-icon {
+  font-size: 24px;
+  color: var(--sticky-text-muted);
+}
+
+.sticky-empty-text {
+  font: var(--font-small);
+  color: var(--sticky-text-muted);
+  text-align: center;
+}
+
+/* ============================================
+   TOAST NOTIFICATIONS
+   ============================================ */
+.sticky-toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--sticky-bg-secondary);
+  border: 1px solid var(--sticky-border);
+  border-radius: 8px;
+  padding: var(--space-sm) var(--space-md);
+  font: var(--font-small);
+  color: var(--sticky-text-primary);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  animation: toastSlideIn var(--transition-normal) ease-out;
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   CONFETTI & CELEBRATION
+   ============================================ */
+.sticky-confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 999;
+  overflow: hidden;
+}
+
+.sticky-confetti {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+}
+
+.sticky-confetti-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--sticky-accent);
+  border-radius: 50%;
+  top: 0;
+  animation: confettiFall 500ms ease-out forwards;
+}
+
+.sticky-confetti-particle:nth-child(2n) {
+  background: var(--sticky-success);
+}
+
+.sticky-confetti-particle:nth-child(3n) {
+  background: #ff6b6b;
+}
+
+.sticky-confetti-particle:nth-child(4n) {
+  background: #4dabf7;
+}
+
+.sticky-confetti-particle:nth-child(5n) {
+  background: #ffa94d;
+}
+
+@keyframes confettiFall {
+  0% {
+    opacity: 1;
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(120px) translateX(var(--confetti-x, 0px)) rotate(360deg);
+  }
+}
+
+.sticky-confetti-particle:nth-child(1) {
+  --confetti-x: -30px;
+}
+
+.sticky-confetti-particle:nth-child(2) {
+  --confetti-x: -15px;
+}
+
+.sticky-confetti-particle:nth-child(3) {
+  --confetti-x: 0px;
+}
+
+.sticky-confetti-particle:nth-child(4) {
+  --confetti-x: 15px;
+}
+
+.sticky-confetti-particle:nth-child(5) {
+  --confetti-x: 30px;
+}
+
+.sticky-confetti-particle:nth-child(6) {
+  --confetti-x: 45px;
+}
+
+/* Motivational Message */
+.sticky-motivational-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--sticky-bg-secondary);
+  border: 1px solid var(--sticky-accent);
+  border-radius: 8px;
+  padding: var(--space-sm) var(--space-md);
+  font: var(--font-body);
+  font-weight: 600;
+  color: var(--sticky-accent);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  z-index: 998;
+  animation: motivationalFadeIn 2000ms ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes motivationalFadeIn {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  80% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+}
