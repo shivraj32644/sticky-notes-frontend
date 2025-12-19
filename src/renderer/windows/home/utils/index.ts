@@ -60,23 +60,43 @@ export const getRandomQuote = () =>
   MOTIVATIONAL_QUOTES[Math.floor(Math.random() * MOTIVATIONAL_QUOTES.length)];
 
 // Confetti Wrapper
+import confetti from "canvas-confetti";
+
 declare global {
   interface Window {
-    confetti: any;
+    confetti: typeof confetti;
   }
 }
 
-export const triggerConfetti = (x: number, y: number) => {
-  if (window.confetti) {
-    // Normalize coordinates to 0-1 range for the canvas
-    const xNorm = x / window.innerWidth;
-    const yNorm = y / window.innerHeight;
+// Ensure confetti is available on window (for Electron compatibility)
+if (typeof window !== "undefined" && !window.confetti) {
+  (window as any).confetti = confetti;
+}
 
-    window.confetti({
-      particleCount: 40,
-      spread: 60,
-      origin: { x: xNorm, y: yNorm },
-      colors: [
+export const triggerConfetti = (x?: number, y?: number) => {
+  try {
+    // Use the imported confetti directly, or fallback to window.confetti
+    const confettiFn = confetti || window.confetti;
+
+    if (confettiFn) {
+      // Center the confetti for better visibility (won't be cut off)
+      // If coordinates provided, use them but ensure they're within bounds
+      let xNorm = 0.5; // Center horizontally
+      let yNorm = 0.5; // Center vertically
+
+      if (x !== undefined && y !== undefined) {
+        // Normalize coordinates but keep them centered if too close to edges
+        const normalizedX = x / window.innerWidth;
+        const normalizedY = y / window.innerHeight;
+
+        // Use provided position but ensure it's not too close to edges
+        // This prevents cut-off while still showing confetti near the action
+        xNorm = Math.max(0.2, Math.min(0.8, normalizedX));
+        yNorm = Math.max(0.3, Math.min(0.7, normalizedY)); // Keep it in middle-upper area
+      }
+
+      // Create multiple bursts for a more impressive effect
+      const colors = [
         "#26ccff",
         "#a25afd",
         "#ff5e7e",
@@ -84,9 +104,44 @@ export const triggerConfetti = (x: number, y: number) => {
         "#fcff42",
         "#ffa62d",
         "#ff36ff",
-      ],
-      disableForReducedMotion: true,
-      zIndex: 9999,
-    });
+      ];
+
+      // Main burst - centered
+      confettiFn({
+        particleCount: 50,
+        spread: 70,
+        origin: { x: xNorm, y: yNorm },
+        colors,
+        disableForReducedMotion: true,
+        zIndex: 9999,
+      });
+
+      // Additional bursts for more coverage
+      setTimeout(() => {
+        confettiFn({
+          particleCount: 30,
+          angle: 60,
+          spread: 55,
+          origin: { x: xNorm - 0.1, y: yNorm },
+          colors,
+          disableForReducedMotion: true,
+          zIndex: 9999,
+        });
+      }, 100);
+
+      setTimeout(() => {
+        confettiFn({
+          particleCount: 30,
+          angle: 120,
+          spread: 55,
+          origin: { x: xNorm + 0.1, y: yNorm },
+          colors,
+          disableForReducedMotion: true,
+          zIndex: 9999,
+        });
+      }, 200);
+    }
+  } catch (error) {
+    console.warn("Confetti effect failed:", error);
   }
 };

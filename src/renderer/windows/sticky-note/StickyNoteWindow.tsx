@@ -283,10 +283,8 @@ const StickyNoteWindow: React.FC = () => {
               : t
           );
           await updateContent({ todos: newTodos });
-          triggerConfetti(
-            (group?.x || 0) + (group?.width || 320) / 2,
-            (group?.y || 0) + (group?.height || 400) / 2
-          );
+          // Center confetti for better visibility
+          triggerConfetti();
           setToastMessage("Timer Finished! Great Focus!");
           setTimeout(() => setToastMessage(null), 3000);
         } else {
